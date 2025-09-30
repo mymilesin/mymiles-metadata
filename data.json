@@ -1,0 +1,34 @@
+// updateOnChainMetadata.mjs
+import fs from "fs-extra";
+import { Keypair, Connection } from "@solana/web3.js";
+import { Metaplex, keypairIdentity } from "@metaplex-foundation/js";
+
+const KEYPAIR_PATH = "/home/karim/.config/solana/update-authority.json"; // <-- set path to your updateAuthority keypair
+const MINT_ADDRESS = "CfCNu8AP7FvBzuzmbuQSdyn7Kw5wVArZAfdhgmWM5QaX";
+const NEW_URI = "https://raw.githubusercontent.com/mymilesin/mymiles-metadata/main/metadata.json"; // <-- this is your new GitHub raw URI
+
+async function main() {
+  const raw = await fs.readFile(KEYPAIR_PATH, "utf8");
+  const arr = JSON.parse(raw);
+  const keypair = Keypair.fromSecretKey(new Uint8Array(arr));
+
+  const connection = new Connection("https://api.mainnet-beta.solana.com", "confirmed");
+  const metaplex = Metaplex.make(connection).use(keypairIdentity(keypair));
+
+  console.log("Updating metadata for mint:", MINT_ADDRESS);
+  try {
+    const updateRes = await metaplex.nfts().update({
+      mintAddress: MINT_ADDRESS,
+      uri: NEW_URI,
+      name: "MyMiles",
+      symbol: "MYMILES"
+    });
+
+    console.log("Update result:", updateRes);
+    console.log("If it contains a transaction signature, check it on Solana explorer.");
+  } catch (err) {
+    console.error("Error updating metadata:", err);
+  }
+}
+
+main();
