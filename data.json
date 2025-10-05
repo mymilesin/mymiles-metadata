@@ -1,34 +1,24 @@
-// updateOnChainMetadata.mjs
-import fs from "fs-extra";
-import { Keypair, Connection } from "@solana/web3.js";
-import { Metaplex, keypairIdentity } from "@metaplex-foundation/js";
-
-const KEYPAIR_PATH = "/home/karim/.config/solana/update-authority.json"; // <-- set path to your updateAuthority keypair
-const MINT_ADDRESS = "CfCNu8AP7FvBzuzmbuQSdyn7Kw5wVArZAfdhgmWM5QaX";
-const NEW_URI = "https://raw.githubusercontent.com/mymilesin/mymiles-metadata/main/metadata.json"; // <-- this is your new GitHub raw URI
-
-async function main() {
-  const raw = await fs.readFile(KEYPAIR_PATH, "utf8");
-  const arr = JSON.parse(raw);
-  const keypair = Keypair.fromSecretKey(new Uint8Array(arr));
-
-  const connection = new Connection("https://api.mainnet-beta.solana.com", "confirmed");
-  const metaplex = Metaplex.make(connection).use(keypairIdentity(keypair));
-
-  console.log("Updating metadata for mint:", MINT_ADDRESS);
-  try {
-    const updateRes = await metaplex.nfts().update({
-      mintAddress: MINT_ADDRESS,
-      uri: NEW_URI,
-      name: "MyMiles",
-      symbol: "MYMILES"
-    });
-
-    console.log("Update result:", updateRes);
-    console.log("If it contains a transaction signature, check it on Solana explorer.");
-  } catch (err) {
-    console.error("Error updating metadata:", err);
-  }
+{
+  "name": "MyMiles",
+  "symbol": "MYMILES",
+  "description": "MYMILES — crypto cashback rewards. Let your cashback multiply. Learn more at https://mymiles.co.in",
+  "image": "https://raw.githubusercontent.com/mymilesin/mymiles-metadata/main/logo.png",
+  "external_url": "https://mymiles.co.in",
+  "seller_fee_basis_points": 0,
+  "attributes": [
+    { "trait_type": "Type", "value": "Reward Token" },
+    { "trait_type": "Decimals", "value": "9" }
+  ],
+  "properties": {
+    "files": [
+      { "uri": "https://raw.githubusercontent.com/mymilesin/mymiles-metadata/main/logo.png", "type": "image/png" }
+    ],
+    "category": "token",
+    "creators": [
+      { "address": "AkrkXKtpkifsnZVjTYkVvY6kKaMPMaFQkywauuxwyzGV", "share": 100 }
+    ]
+  },
+  "tags": ["rewards", "utility", "solana"],
+  "address": "CfCNu8AP7FvBzuzmbuQSdyn7Kw5wVArZAfdhgmWM5QaX",
+  "decimals": 9
 }
-
-main();
