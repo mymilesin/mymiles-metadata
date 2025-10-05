@@ -1,0 +1,14 @@
+{
+  "chainId": 101,
+  "address": "CfCNu8AP7FvBzuzmbuQSdyn7Kw5wVArZAfdhgmWM5QaX",
+  "symbol": "MYMILES",
+  "name": "MyMiles",
+  "decimals": 9,
+  "logoURI": "https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/CfCNu8AP7FvBzuzmbuQSdyn7Kw5wVArZAfdhgmWM5QaX/logo.png",
+  "tags": ["utility-token","reward"],
+  "extensions": {
+    "website": "https://mymiles.co.in",
+    "twitter": "https://twitter.com/mymilescrypto",
+    "github": "https://github.com/mymilesin/mymiles-metadata"
+  }
+}
